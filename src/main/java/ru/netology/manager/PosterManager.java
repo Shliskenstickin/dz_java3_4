@@ -1,32 +1,30 @@
 package ru.netology.manager;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import ru.netology.domain.Movie;
+import ru.netology.repository.PosterRepository;
 
 @NoArgsConstructor
 public class PosterManager {
     private int posterLength = 10;
 
-    private Movie[] movies = new Movie[0];
+    private PosterRepository repository;
 
-    public PosterManager(int posterLength) {
+    public PosterManager(PosterRepository repository) {
+        this.repository = repository;
+    }
+
+    public PosterManager(int posterLength, PosterRepository repository) {
         this.posterLength = posterLength;
+        this.repository = repository;
     }
 
     public void add(Movie movie) {
-        // создаём новый массив размером на единицу больше
-        int length = movies.length + 1;
-        Movie[] tmp = new Movie[length];
-        // копируем поэлементно
-        System.arraycopy(movies, 0, tmp, 0, movies.length);
-        // кладём последним наш элемент
-        int lastIndex = tmp.length - 1;
-        tmp[lastIndex] = movie;
-        movies = tmp;
+        repository.save(movie);
     }
 
     public Movie[] showNewMovies() {
+        Movie[] movies = repository.findAll();
         if (movies.length < posterLength) posterLength = movies.length;
         Movie[] result = new Movie[posterLength];
         // перебираем массив в прямом порядке
