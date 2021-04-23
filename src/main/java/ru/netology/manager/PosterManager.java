@@ -25,11 +25,12 @@ public class PosterManager {
 
     public Movie[] showNewMovies() {
         Movie[] movies = repository.findAll();
-        if (movies.length < posterLength) posterLength = movies.length;
-        Movie[] result = new Movie[posterLength];
+        int count = posterLength;
+        if (movies.length < count) count = movies.length;
+        Movie[] result = new Movie[count];
         // перебираем массив в прямом порядке
         // но кладём в результаты в обратном
-        for (int i = 0; i < posterLength; i++) {
+        for (int i = 0; i < count; i++) {
             int index = movies.length - 1 - i;
             result[i] = movies[index];
         }
